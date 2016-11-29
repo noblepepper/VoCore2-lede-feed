@@ -1,0 +1,38 @@
+#!/bin/sh
+
+. /lib/functions.sh
+. /lib/functions/system.sh
+
+sed -i '/VoCore2/d' /etc/opkg/distfeeds.conf
+
+sed -i -e 's/root::/root:$1$nClfHNjC$V458KFdeS8bMgeo1f15sM.:/g' /etc/shadow
+
+echo 'src/gz vocore2_core http://noblepepper.com/repositories/lede/0_1/packages' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_base http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/base' > /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_telephony http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/telephony' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_packages http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/packages' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_routing http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/routing' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_luci http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/luci' >> /etc/opkg/customfeeds.conf
+
+mv /etc/opkg/distfeeds.conf /etc/opkg/distfeeds.conf.orig
+
+
+uci set system.@system[-1].hostname="vocore2"
+uci set network.wwan=interface
+uci set network.wwan.proto=dhcp
+
+uci set system.led_wifi=led
+uci set system.led_wifi.sysfs='VoCore2:pink:wifi'
+uci set system.led_wifi.dev='apcli0'
+uci set system.led_wifi.trigger='netdev'
+uci set system.led_wifi.mode='link'
+uci set system.led_wifi.name='WIFI'
+
+uci set system.led_eth=led
+uci set system.led_eth.sysfs='VoCore2:green:eth0'
+uci set system.led_eth.dev='eth0'
+uci set system.led_eth.trigger='netdev'
+uci set system.led_eth.mode='link tx rx'
+uci set system.led_eth.name='ETH'
+
+uci commit
