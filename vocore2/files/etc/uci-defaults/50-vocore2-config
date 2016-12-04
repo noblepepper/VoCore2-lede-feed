@@ -7,13 +7,13 @@ sed -i '/VoCore2/d' /etc/opkg/distfeeds.conf
 
 sed -i -e 's/root::/root:$1$nClfHNjC$V458KFdeS8bMgeo1f15sM.:/g' /etc/shadow
 
-echo 'src/gz vocore2_core http://noblepepper.com/repositories/lede/targets/ramips/mt7628/packages' > /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_base http://noblepepper.com/repositories/packages/base' > /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_telephony http://noblepepper.com/repositories/lede/packages/mipsel_24kc/telephony' >> /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_VoCore2 http://noblepepper.com/repositories/lede/packages/mipsel_24kc/VoCore2' >> /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_packages http://noblepepper.com/repositories/lede/packages/mipsel_24kc/packages' >> /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_routing http://noblepepper.com/repositories/lede/packages/mipsel_24kc/routing' >> /etc/opkg/customfeeds.conf
-echo 'src/gz vocore2_luci http://noblepepper.com/repositories/lede/packages/mipsel_24kc/luci' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_core http://noblepepper.com/repositories/lede/0_1/targets/ramips/mt7628/packages' > /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_base http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/base' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_telephony http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/telephony' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_VoCore2 http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/VoCore2' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_packages http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/packages' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_routing http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/routing' >> /etc/opkg/customfeeds.conf
+echo 'src/gz vocore2_luci http://noblepepper.com/repositories/lede/0_1/packages/mipsel_24kc/luci' >> /etc/opkg/customfeeds.conf
 
 mv /etc/opkg/distfeeds.conf /etc/opkg/distfeeds.conf.orig
 
@@ -37,8 +37,26 @@ uci set system.led_eth.mode='link tx rx'
 uci set system.led_eth.name='ETH'
 
 uci set wireless.radio0.disabled='0'
-uci set wireless.default_radio0.ssid='VoCore2'
-uci set wireless.default_radio0.mode='ap'
-uci set wireless.default_radio0.network='lan wwan'
+
+uci delete wireless.default_radio0
+
+uci set wireless.ap=wifi-iface
+uci set wireless.ap.device='radio0'
+uci set wireless.ap.mode='ap'
+uci set wireless.ap.network='lan'
+uci set wireless.ap.ifname='ra0'
+uci set wireless.ap.ssid='VoCore2'
+uci set wireless.ap.key='12345678'
+uci set wireless.ap.encryption='psk2'
+
+uci set wireless.sta=wifi-iface
+uci set wireless.sta.device='radio0'
+uci set wireless.sta.mode='sta'
+uci set wireless.sta.network='lan wwan'
+uci set wireless.sta.ifname='apcli0'
+uci set wireless.sta.ssid='UplinkAp'
+uci set wireless.sta.encryption='psk2'
+uci set wireless.sta.key='SecretKey'
+uci set wireless.sta.disabled='1'
 
 uci commit
