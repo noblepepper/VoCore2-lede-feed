@@ -48,6 +48,7 @@ uci set wireless.ap.ifname='ra0'
 uci set wireless.ap.ssid='VoCore2'
 uci set wireless.ap.key='12345678'
 uci set wireless.ap.encryption='psk2'
+uci set wireless.ap.disabled='0'
 
 uci set wireless.sta=wifi-iface
 uci set wireless.sta.device='radio0'
