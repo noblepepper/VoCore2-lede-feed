@@ -5,7 +5,9 @@
 
 sed -i '/VoCore2/d' /etc/opkg/distfeeds.conf
 
-sed -i -e 's/root::/root:$1$nClfHNjC$V458KFdeS8bMgeo1f15sM.:/g' /etc/shadow
+if [ -n "$(grep 'root::' /etc/shadow)" ]; then
+	sed -i -e 's/root::/root:$1$nClfHNjC$V458KFdeS8bMgeo1f15sM.:/g' /etc/shadow
+fi
 
 echo 'src/gz vocore2_core http://noblepepper.com/repositories/lede/0_3/targets/ramips/mt7628/packages' > /etc/opkg/customfeeds.conf
 echo 'src/gz vocore2_base http://noblepepper.com/repositories/lede/0_3/packages/mipsel_24kc/base' >> /etc/opkg/customfeeds.conf
